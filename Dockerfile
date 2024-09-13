@@ -1,10 +1,15 @@
 ARG ROS_DISTRO=noetic
-FROM ros:noetic-ros-base@sha256:e3866df3b9798c4f3b49946d61b179745a22409ee8ce7037411ea550581b12b4
+FROM ros:noetic-ros-base-focal
 ARG USE_RVIZ
 ARG BUILD_SEQUENTIAL=0
 ENV DEBIAN_FRONTEND=noninteractive
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 RUN sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-noetic-perception=1.5.0-1* \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update \
    && apt-get -y install --no-install-recommends software-properties-common git libusb-1.0-0-dev wget zsh python3-catkin-tools
 
